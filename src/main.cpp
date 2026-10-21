@@ -68,4 +68,32 @@ class $modify(AutoPlayLayer, PlayLayer) {
 		float lead = static_cast<float>(mod->getSettingValue<double>("lead-time")) * speed;
 
 		// Keep the pointer correct after practice checkpoints / restarts.
-		while (f.
+		while (f.idx > 0 && f.hazards[f.idx - 1].getMaxX() > px - 10.f) f.idx--;
+		while (f.idx < f.hazards.size() && f.hazards[f.idx].getMaxX() < px - 10.f) f.idx++;
+
+		bool danger = false;
+		for (size_t i = f.idx; i < f.hazards.size(); i++) {
+			auto const& r = f.hazards[i];
+			float dx = r.getMinX() - px;
+			if (dx > lead + 30.f) break;
+			// Hazard must be roughly at the player's height (works upside down too).
+			bool sameBand = r.getMaxY() > py - 15.f && r.getMinY() < py + 30.f;
+			if (sameBand && dx <= lead) {
+				danger = true;
+				break;
+			}
+		}
+
+		// Release first, so the next jump is a fresh click.
+		if (f.holding) {
+			this->handleButton(false, 1, true);
+			f.holding = false;
+			return;
+		}
+
+		if (danger && p->m_isOnGround) {
+			this->handleButton(true, 1, true);
+			f.holding = true;
+		}
+	}
+};
