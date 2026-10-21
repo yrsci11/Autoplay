@@ -1,0 +1,36 @@
+{
+	"geode": "5.11.2",
+	"gd": {
+		"android": "2.2081"
+	},
+	"version": "v1.0.0",
+	"id": "yrcsi.auto-play",
+	"name": "Auto Play",
+	"developer": "yrcsi",
+	"description": "The game plays itself. Simple hazard-lookahead bot for cube sections.",
+	"settings": {
+		"enabled": {
+			"type": "bool",
+			"name": "Enabled",
+			"description": "Turn the bot on or off.",
+			"default": false
+		},
+		"practice-only": {
+			"type": "bool",
+			"name": "Practice Mode Only",
+			"description": "Only play by itself in Practice Mode, so normal runs stay legit.",
+			"default": true
+		},
+		"lead-time": {
+			"type": "float",
+			"name": "Lead Time",
+			"description": "How early (in seconds) it jumps before a hazard. Raise if it jumps too late, lower if too early.",
+			"default": 0.12,
+			"min": 0.05,
+			"max": 0.3,
+			"control": {
+				"slider": true
+			}
+		}
+	}
+}
